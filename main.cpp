@@ -50,7 +50,8 @@ int main()
             {
                 string name;
                 name = get_input_string("Student Name");
-                vector<Student> students = ss.search_student_name(name);
+                cout << endl;
+                vector<Student> students = ss.search_student_in_name(name);
                 break;
             } 
             case 5:
