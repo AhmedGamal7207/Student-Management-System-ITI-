@@ -5,6 +5,7 @@
 #include <string.h>
 #include <vector>
 #include <mysql/mysql.h>
+#include <fstream> 
 #include "../database_models/MyDatabase.h"
 #include "../models/Student.h"
 
@@ -22,7 +23,8 @@ class StudentService
         vector<Student> search_student_name(string name, int print = 1);
         vector<Student> search_student_in_name(string name, int print = 1);
         void update_student(int id, string column_name, string new_value);
-        vector<Student> get_all_students(int print = 1);
+        vector<Student> get_all_students(int print = 1, int top = 0);
+        void export_students_csv();
 };
 
 #endif

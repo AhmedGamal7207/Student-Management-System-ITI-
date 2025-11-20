@@ -7,6 +7,8 @@
 using namespace std;
 Student fill_student();
 string get_input_string(string prompt);
+float get_input_float(string prompt);
+int get_input_int(string prompt);
 
 int main()
 {
@@ -22,9 +24,13 @@ int main()
         cout << "4) Search for Students with Name" << endl;
         cout << "5) Update Student" << endl;
         cout << "6) Delete Student" << endl;
-        cout << "7) Exit" << endl;
-        cout << endl << "Your Choice: ";
-        cin >> choice;
+        cout << "7) Export Students to CSV" << endl;
+        cout << "8) Show Top 5 Students" << endl;
+        cout << "9) Exit" << endl;
+
+        choice = get_input_int("Your Choice");
+
+        cout << endl;
 
         switch(choice){
             case 1:
@@ -41,8 +47,7 @@ int main()
             case 3:
             {
                 int id;
-                cout << "Please enter Student ID: ";
-                cin >> id;
+                id = get_input_int("Student ID");
                 Student s = ss.search_student_id(id);
                 break;
             }
@@ -57,8 +62,7 @@ int main()
             case 5:
             {
                 int id;
-                cout << "Please enter Student ID: ";
-                cin >> id;
+                id = get_input_int("Student ID");
                 Student s = ss.search_student_id(id, 0);
                 if(!s.get_id()){
                     break;
@@ -78,12 +82,22 @@ int main()
             case 6:
             {
                 int id;
-                cout << "Please enter Student ID: ";
-                cin >> id;
+                id = get_input_int("Student ID");
                 ss.delete_student(id);
                 break;
             }
             case 7:
+            {
+                cout << "Exporting students to CSV file: students.csv" << endl;
+                ss.export_students_csv();
+                break;
+            }
+            case 8:
+            {
+                vector<Student> top_students = ss.get_all_students(1,1);
+                break;
+            } 
+            case 9:
             {
                 break;
             }
@@ -91,7 +105,7 @@ int main()
                 cout << "Please enter one of the options provided" << endl << endl;
                 break;
         }
-    }while(choice != 7);
+    }while(choice != 9);
 
     cout  << endl << endl << "****Thank You for using ITI Student Management System****" << endl;
     
@@ -107,20 +121,19 @@ Student fill_student(){
         
     name = get_input_string("Student Name");
 
-    cout << "Please enter Student Age: ";
-    cin >> age;
+    age = get_input_int("Student Age");
 
     department = get_input_string("Student Department");
 
-    cout << "Please enter Student GPA: ";
-    cin >> gpa;
+    gpa = get_input_float("Student GPA");
 
     Student s(name, age, department, gpa);
     return s;
     
 }
 
-string get_input_string(string prompt){
+string get_input_string(string prompt)
+{
     string s;
     cout << "Please enter "<< prompt << ": ";
     getline(cin, s);
@@ -131,4 +144,28 @@ string get_input_string(string prompt){
     return s;
 }
 
+float get_input_float(string prompt){
+    float number;
+    cout << "Please enter "<< prompt << ": ";
+    while (!(cin >> number)) // goes to fail state if the entered is not a number
+    {  
+        cout << "Please enter only numbers: ";
+        cin.clear(); // cin was in the fail state, so clear its state to make it accept new input (normal state)
+        cin.ignore(10000, '\n'); // Ignore (remove from KBB) up to 1000 chars or untill you find new line char
+    }
+    cout << endl;
+    return number;
+}
 
+int get_input_int(string prompt){
+    int number;
+    cout << "Please enter "<< prompt << ": ";
+    while (!(cin >> number))
+    {  
+        cout << "Please enter only integers: ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+    cout << endl << endl;
+    return number;
+}

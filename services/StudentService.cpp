@@ -98,10 +98,19 @@ Student StudentService::search_student_id(int id, int print)
     
 }
 
-vector<Student> StudentService::get_all_students(int print)
+vector<Student> StudentService::get_all_students(int print, int top)
 {
     vector<Student> students;
-    string query = "SELECT * FROM students;";
+    string query;
+    if(top)
+    {
+        query = "SELECT * FROM students ORDER BY gpa DESC LIMIT 5;";
+    }
+    else
+    {
+        query = "SELECT * FROM students;";
+    }
+    
 
     if(db.execute_query(query.c_str()))
     {
@@ -207,4 +216,32 @@ vector<Student> StudentService::search_student_in_name(string name, int print)
     }
     cout << endl;
     return students;
+}
+
+void StudentService::export_students_csv()
+{
+    ofstream students_file("students.csv");
+
+    if (!students_file.is_open()) {
+        cout << endl << "Error: Could not open file " << "students.csv" << endl << endl;
+        return;
+    }
+
+    vector<Student> students = get_all_students();
+
+    int students_count = students.size();
+    students_file << "student_id,name,age,department,gpa" << "\n";
+    
+    for (int i=0; i<students_count; i++)
+    {
+        students_file << students[i].get_id() << ","
+        << students[i].get_name() << ","
+        << students[i].get_age() << ","
+        << students[i].get_department() << ","
+        << students[i].get_gpa() << "\n";
+    }
+    students_file.close();
+
+    cout << endl << "Students have been exported successfully to students.csv file" << endl << endl;
+
 }
