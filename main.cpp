@@ -58,7 +58,7 @@ int main()
                 cout << endl;
                 vector<Student> students = ss.search_student_in_name(name);
                 break;
-            } 
+            }
             case 5:
             {
                 int id;

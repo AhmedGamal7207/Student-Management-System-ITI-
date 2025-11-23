@@ -14,4 +14,4 @@ CREATE TABLE students (
 
 SELECT * FROM students;
 
-
+SELECT * FROM students ORDER BY gpa DESC LIMIT 5;
